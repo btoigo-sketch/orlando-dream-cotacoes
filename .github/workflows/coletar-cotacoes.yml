@@ -1,0 +1,42 @@
+name: Atualiza cotações de ingressos
+
+on:
+  # Botão manual (aba Actions > este workflow > "Run workflow").
+  # Use-o para o primeiro teste, antes de confiar no horário automático.
+  workflow_dispatch:
+  schedule:
+    # 08:00 no horário de Brasília (UTC-3, sem horário de verão desde 2019) = 11:00 UTC.
+    - cron: "0 11 * * *"
+
+permissions:
+  contents: write   # necessário para o job dar 'git push' neste repositório
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Rodar a coleta (falha e não publica nada em caso de anomalia ou erro)
+        run: python3 coletar_cotacoes.py --meses 3
+
+      - name: Publicar cotacoes.json, se algo mudou
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- cotacoes.json; then
+            echo "Nada mudou em cotacoes.json; nada para publicar."
+          else
+            git add cotacoes.json
+            git commit -m "Atualiza cotações de ingressos (automático $(date -u +%Y-%m-%d))"
+            git push
+          fi
