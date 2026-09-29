@@ -1,0 +1,295 @@
+{
+  "email_alerta": "b.toigo@gmail.com",
+  "dias_flexibilidade": 7,
+  "rotas": [
+    {
+      "nome": "GRU → MIA (American via Smiles)",
+      "origem": "GRU",
+      "destino": "MIA",
+      "data_base": "auto",
+      "companhias": [
+        "American"
+      ],
+      "programas": [
+        "Smiles"
+      ],
+      "limites_pontos": {
+        "Econômica": 70000,
+        "Premium": 102000,
+        "Executiva": 250000
+      }
+    },
+    {
+      "nome": "SCL → GRU (Turkish via Azul Fidelidade)",
+      "origem": "SCL",
+      "destino": "GRU",
+      "data_base": "auto",
+      "companhias": [
+        "Turkish"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": null,
+        "Premium": null,
+        "Executiva": 100000
+      }
+    },
+    {
+      "nome": "VCP → FLL (Azul via Azul Fidelidade)",
+      "origem": "VCP",
+      "destino": "FLL",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 120000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "GRU → EWR (United via Azul Fidelidade)",
+      "origem": "GRU",
+      "destino": "EWR",
+      "data_base": "auto",
+      "companhias": [
+        "United"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 110000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "GRU → JFK (American via Smiles)",
+      "origem": "GRU",
+      "destino": "JFK",
+      "data_base": "auto",
+      "companhias": [
+        "American"
+      ],
+      "programas": [
+        "Smiles"
+      ],
+      "limites_pontos": {
+        "Econômica": 80000,
+        "Premium": null,
+        "Executiva": 250000
+      }
+    },
+    {
+      "nome": "GIG → JFK (American via Smiles)",
+      "origem": "GIG",
+      "destino": "JFK",
+      "data_base": "auto",
+      "companhias": [
+        "American"
+      ],
+      "programas": [
+        "Smiles"
+      ],
+      "limites_pontos": {
+        "Econômica": 80000,
+        "Premium": null,
+        "Executiva": 250000
+      }
+    },
+    {
+      "nome": "GRU → DXB (Emirates via Azul Fidelidade)",
+      "origem": "GRU",
+      "destino": "DXB",
+      "data_base": "auto",
+      "companhias": [
+        "Emirates"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 220000,
+        "Premium": null,
+        "Executiva": 720000
+      }
+    },
+    {
+      "nome": "GIG → DXB (Emirates via Azul Fidelidade)",
+      "origem": "GIG",
+      "destino": "DXB",
+      "data_base": "auto",
+      "companhias": [
+        "Emirates"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": null,
+        "Premium": null,
+        "Executiva": 720000
+      }
+    },
+    {
+      "nome": "VCP → MCO (Azul via Azul Fidelidade)",
+      "origem": "VCP",
+      "destino": "MCO",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 120000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "GRU → EZE (Turkish via Azul Fidelidade)",
+      "origem": "GRU",
+      "destino": "EZE",
+      "data_base": "auto",
+      "companhias": [
+        "Turkish"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": null,
+        "Premium": null,
+        "Executiva": 70000
+      }
+    },
+    {
+      "nome": "GIG → EZE (Emirates via Smiles)",
+      "origem": "GIG",
+      "destino": "EZE",
+      "data_base": "auto",
+      "companhias": [
+        "Emirates"
+      ],
+      "programas": [
+        "Smiles"
+      ],
+      "limites_pontos": {
+        "Econômica": null,
+        "Premium": null,
+        "Executiva": 150000
+      }
+    },
+    {
+      "nome": "POA → REC (Azul via Azul Fidelidade)",
+      "origem": "POA",
+      "destino": "REC",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 50000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "SCL → GRU (Turkish via Smiles)",
+      "origem": "SCL",
+      "destino": "GRU",
+      "data_base": "auto",
+      "companhias": [
+        "Turkish"
+      ],
+      "programas": [
+        "Smiles"
+      ],
+      "limites_pontos": {
+        "Econômica": null,
+        "Premium": null,
+        "Executiva": 100000
+      }
+    },
+    {
+      "nome": "MIA → GRU (American via Smiles)",
+      "origem": "MIA",
+      "destino": "GRU",
+      "data_base": "auto",
+      "companhias": [
+        "American"
+      ],
+      "programas": [
+        "Smiles"
+      ],
+      "limites_pontos": {
+        "Econômica": 70000,
+        "Premium": 102000,
+        "Executiva": 250000
+      }
+    },
+    {
+      "nome": "REC → POA (Azul via Azul Fidelidade)",
+      "origem": "REC",
+      "destino": "POA",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 50000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "FLL → VCP (Azul via Azul Fidelidade)",
+      "origem": "FLL",
+      "destino": "VCP",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 100000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "MCO → VCP (Azul via Azul Fidelidade)",
+      "origem": "MCO",
+      "destino": "VCP",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 100000,
+        "Premium": null,
+        "Executiva": null
+      }
+    }
+  ]
+}
