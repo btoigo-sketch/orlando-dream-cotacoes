@@ -290,6 +290,74 @@
         "Premium": null,
         "Executiva": null
       }
+    },
+    {
+      "nome": "VCP → LIS (Azul via Azul Fidelidade)",
+      "origem": "VCP",
+      "destino": "LIS",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 100000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "LIS → VCP (Azul via Azul Fidelidade)",
+      "origem": "LIS",
+      "destino": "VCP",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 100000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "VCP → MAD (Azul via Azul Fidelidade)",
+      "origem": "VCP",
+      "destino": "MAD",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 100000,
+        "Premium": null,
+        "Executiva": null
+      }
+    },
+    {
+      "nome": "MAD → VCP (Azul via Azul Fidelidade)",
+      "origem": "MAD",
+      "destino": "VCP",
+      "data_base": "auto",
+      "companhias": [
+        "Azul"
+      ],
+      "programas": [
+        "Azul"
+      ],
+      "limites_pontos": {
+        "Econômica": 100000,
+        "Premium": null,
+        "Executiva": null
+      }
     }
   ]
 }
