@@ -25,7 +25,7 @@ LIMIAR = 0.20          # desvio máximo vs média histórica
 # Identificação por CÓDIGO (estável). "kw" é só fallback por palavra-chave
 # para produtos cujo código ainda não foi confirmado.
 PRODUTOS = {
-    "disney_all":    {"nome": "Disney 4-Park Magic Ticket", "codes": ["T0006129"], "kw": ["magic ticket"], "sazonal": True},
+    "disney_all":    {"nome": "Disney 4-Park Magic Ticket", "codes": ["T0007007", "T0006129"], "kw": ["magic ticket"], "sazonal": True},
     "mk":            {"nome": "Magic Kingdom",       "codes": ["T0001879"]},
     "epcot":         {"nome": "EPCOT",               "codes": ["T0001881"]},
     "hs":            {"nome": "Hollywood Studios",   "codes": ["T0001883"]},
