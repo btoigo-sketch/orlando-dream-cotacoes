@@ -14,6 +14,12 @@ Exemplos:
 
   # Online, 3 meses (mês atual + 2), com publicação no GitHub
   python coletar_cotacoes.py --meses 3 --publicar
+
+  # Se a coleta acima parar em "Anomalias" e não gravar nada: os dados JÁ COLETADOS ficam
+  # salvos num arquivo de pendência (ver aviso no final da execução). Para decidir sem refazer
+  # a coleta:
+  python coletar_cotacoes.py --resolver-pendencia --aceitar-anomalias
+  python coletar_cotacoes.py --resolver-pendencia --descartar-anomalias
 """
 import argparse, calendar, datetime as dt, json, os, re, statistics, subprocess, sys, time
 
@@ -252,53 +258,83 @@ def main():
     ap.add_argument("--aceitar-anomalias", action="store_true")
     ap.add_argument("--descartar-anomalias", action="store_true")
     ap.add_argument("--publicar", action="store_true", help="git add/commit/push só do cotacoes.json")
+    ap.add_argument("--resolver-pendencia", action="store_true",
+                    help="não coleta nada; decide sobre a última coleta que ficou pendente por anomalia "
+                         "(precisa vir com --aceitar-anomalias ou --descartar-anomalias)")
     a = ap.parse_args()
 
-    try:
-        if a.har:
-            lotes = [("HAR", paginas_do_har(a.har))]
-        elif a.sessao:
-            lotes = [("sessão " + a.sessao, baixar_paginas(nova_http(), a.sessao))]
-        else:
-            periodos = ([(dt.date.fromisoformat(i), dt.date.fromisoformat(f)) for i, f in a.periodo]
-                        if a.periodo else list(meses_a_coletar(a.meses)))
-            lotes = []
-            for ini, fim in periodos:
-                lotes += coletar_periodo(ini, fim)
-                time.sleep(10)
-    except Bloqueado as e:
-        print(f"\nERRO: {e}\nNada foi gravado.")
-        sys.exit(3)
-    except Exception as e:
-        print(f"\nERRO na coleta: {type(e).__name__}: {e}\nNada foi gravado; o cotacoes.json não foi alterado. "
-              "Tente novamente em alguns minutos.")
-        sys.exit(1)
+    pendencia_path = a.saida + ".pendente.json"
 
     try:
         historico = json.load(open(a.saida, encoding="utf-8"))
     except FileNotFoundError:
         historico = {}
 
-    novos, avisos = {}, []
-    for rot, lote in lotes:
-        dados, log = extrair(lote)
-        avisos += [f"[{rot}] {m}" for m in log]
-        for k, d in dados.items():
-            novos.setdefault(k, {"por_data": {}, "code": d["code"]})["por_data"].update(d["por_data"])
+    if a.resolver_pendencia:
+        if not (a.aceitar_anomalias or a.descartar_anomalias):
+            print("Use --resolver-pendencia junto com --aceitar-anomalias ou --descartar-anomalias.")
+            sys.exit(2)
+        try:
+            with open(pendencia_path, encoding="utf-8") as f:
+                pend = json.load(f)
+        except FileNotFoundError:
+            print(f"Não há pendência salva em {pendencia_path}. Rode a coleta normalmente primeiro.")
+            sys.exit(2)
+        novos, anom = pend["novos"], [tuple(x) for x in pend["anomalias"]]
+        for av in pend.get("avisos", []):
+            print("•", av)
+        print(f"Retomando a coleta feita em {pend['coletado_em']} (sem baixar nada de novo).")
+    else:
+        try:
+            if a.har:
+                lotes = [("HAR", paginas_do_har(a.har))]
+            elif a.sessao:
+                lotes = [("sessão " + a.sessao, baixar_paginas(nova_http(), a.sessao))]
+            else:
+                periodos = ([(dt.date.fromisoformat(i), dt.date.fromisoformat(f)) for i, f in a.periodo]
+                            if a.periodo else list(meses_a_coletar(a.meses)))
+                lotes = []
+                for ini, fim in periodos:
+                    lotes += coletar_periodo(ini, fim)
+                    time.sleep(10)
+        except Bloqueado as e:
+            print(f"\nERRO: {e}\nNada foi gravado.")
+            sys.exit(3)
+        except Exception as e:
+            print(f"\nERRO na coleta: {type(e).__name__}: {e}\nNada foi gravado; o cotacoes.json não foi alterado. "
+                  "Tente novamente em alguns minutos.")
+            sys.exit(1)
 
-    for av in avisos:
-        print("•", av)
+        novos, avisos = {}, []
+        for rot, lote in lotes:
+            dados, log = extrair(lote)
+            avisos += [f"[{rot}] {m}" for m in log]
+            for k, d in dados.items():
+                novos.setdefault(k, {"por_data": {}, "code": d["code"]})["por_data"].update(d["por_data"])
 
-    anom = anomalias(novos, historico)
+        for av in avisos:
+            print("•", av)
+
+        anom = anomalias(novos, historico)
+
     if anom and not (a.aceitar_anomalias or a.descartar_anomalias):
-        print("\n⚠️  Anomalias (>20% vs mesma data da coleta anterior, ou vs dias vizinhos se não houver histórico) - nada foi gravado:")
+        with open(pendencia_path, "w", encoding="utf-8") as f:
+            json.dump({"coletado_em": dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
+                       "novos": novos, "avisos": avisos, "anomalias": anom}, f, ensure_ascii=False)
+        print("\n⚠️  Anomalias (>20% vs mesma data da coleta anterior, ou vs dias vizinhos se não houver histórico):")
         for k, data, pts, ref, desv in anom:
             print(f"  {k:14} {data}  {pts:>8}  ref {ref:>8}  {desv:+.1f}%")
-        print("Reexecute com --aceitar-anomalias ou --descartar-anomalias.")
+        print(f"\nOs preços já coletados foram guardados em {pendencia_path} — nada foi gravado ainda "
+              "e NENHUMA nova busca é necessária para decidir. Rode um dos dois comandos abaixo:")
+        print("  python3 coletar_cotacoes.py --resolver-pendencia --aceitar-anomalias")
+        print("  python3 coletar_cotacoes.py --resolver-pendencia --descartar-anomalias")
         sys.exit(2)
     if anom and a.descartar_anomalias:
         for k, data, *_ in anom:
             novos[k]["por_data"].pop(data, None)
+
+    if os.path.exists(pendencia_path):
+        os.remove(pendencia_path)
 
     final = {"_atualizado": dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
              "_nota": "Gerado automaticamente pelo agente. Não editar manualmente.",
