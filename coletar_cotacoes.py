@@ -363,7 +363,20 @@ def main():
         if "nothing to commit" in (r.stdout + r.stderr):
             print("Sem mudanças para publicar.")
         else:
-            subprocess.run(["git", "push"], cwd=cwd, check=True)
+            # Traz o que mudou no GitHub (ex.: taxa no config.json) antes de enviar,
+            # para o push não ser rejeitado por o Mac estar desatualizado.
+            p = subprocess.run(["git", "pull", "--rebase", "--autostash"], cwd=cwd,
+                               capture_output=True, text=True)
+            if p.returncode != 0:
+                subprocess.run(["git", "rebase", "--abort"], cwd=cwd, capture_output=True)
+                print("\nERRO ao sincronizar com o GitHub (git pull). A coleta foi gravada e commitada "
+                      "no Mac, mas não foi publicada. Detalhes:\n" + (p.stdout + p.stderr).strip())
+                sys.exit(4)
+            s = subprocess.run(["git", "push"], cwd=cwd, capture_output=True, text=True)
+            if s.returncode != 0:
+                print("\nERRO no git push. A coleta foi gravada e commitada no Mac, mas não foi "
+                      "publicada. Detalhes:\n" + (s.stdout + s.stderr).strip())
+                sys.exit(4)
             print("Publicado no GitHub.")
 
 
